@@ -1,6 +1,7 @@
 let isSpeaking = false;
 let paused = false;
 let lastOffset = 0;
+let currentLanguage = getLanguage();
 const readButton = document.getElementById("readButton");
 const restartButton = document.getElementById("restartButton");
 const stopButton = document.getElementById("stopButton");
@@ -88,6 +89,14 @@ function getVoiceForLanguage(language) {
   return voices[language] || voices['en'];
 }
 
+function checkLanguageChange() {
+  const newLanguage = getLanguage();
+  if (newLanguage !== currentLanguage) {
+    stopSpeaking();
+    currentLanguage = newLanguage;
+  }
+}
+
 readButton.addEventListener("click", toggleSpeech);
 restartButton.addEventListener("click", () => {
   if (isSpeaking) {
@@ -102,3 +111,5 @@ document.addEventListener("visibilitychange", () => {
     stopSpeaking();
   }
 });
+
+setInterval(checkLanguageChange, 1000);
