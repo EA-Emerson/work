@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text to Speech</title>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=HKbBD4gB"></script>
+    <style>
+      /* Add some basic styling */
+      #controls {
+        margin-top: 20px;
+      }
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button img {
+        width: 30px;
+        height: 30px;
+      }
+      button:disabled img {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <!-- Your text content goes here -->
+
+      initiative satisfaction presence analysis decision session presentation
+      map independence dad county wedding efficiency courage patience activity
+      setting restaurant exam theory cookie ladder reception computer
+      maintenance disease idea ambition winner cell fact topic gene breath user
+      fishing writer drawer addition outcome assistant two technology currency
+      energy artisan writing guest significance development
+    </div>
+    <div id="controls">
+      <button id="readButton">
+        <img src="icons/megaphone.svg" alt="Read" />
+      </button>
+      <button id="restartButton" disabled>
+        <img src="icons/restart.svg" alt="Restart" />
+      </button>
+      <button id="stopButton" disabled>
+        <img src="icons/stop.svg" alt="Stop" />
+      </button>
+    </div>
+
+    <script src="text-to-speech.js"></script>
+  </body>
+</html>
