@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voorleesfunctie</title>
+    
+    <style>
+        #controls {
+            margin-top: 20px;
+        }
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button img {
+            width: 30px;
+            height: 30px;
+        }
+        button:disabled img {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+  <div id="controls">
+      <button id="readButton">
+          <img src="icons/megaphone.svg" alt="Read" onclick="handleClick()">
+      </button>
+      <button id="restartButton">
+          <img src="icons/restart.svg" alt="Restart">
+      </button>
+      <button id="stopButton" disabled>
+          <img src="icons/stop.svg" alt="Stop">
+      </button>
+  </div>
+
+    <script>
+        let isSpeaking = false;
+        let speechSynthesisUtterance = null;
+        let clickTimer = null;
+        let clickCount = 0;
+        let lastLang = null;
+        let lastOffset = 0;
+        const restartButton = document.getElementById("restartButton")
+
+        function getLanguage() {
+            // Detecteer de taal van de pagina (aangepast aan jouw vertaalprogramma)
+            const lang = document.documentElement.lang || 'en-GB'; // default to Engels if not detected
+            return lang;
+        }
+
+        function startSpeaking(offset = 0) {
+            const text = document.body.innerText.slice(offset);
+            const lang = getLanguage();
+
+            speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
+            speechSynthesisUtterance.lang = lang;
+            speechSynthesisUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === lang && voice.name.includes('Female')) || speechSynthesis.getVoices()[0];
+
+            speechSynthesisUtterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    lastOffset = offset + event.charIndex;
+                }
+            };
+
+            window.speechSynthesis.speak(speechSynthesisUtterance);
+            isSpeaking = true;
+            lastLang = lang;
+        }
+
+        function stopSpeaking() {
+            window.speechSynthesis.cancel();
+            isSpeaking = false;
+        }
+        restartButton.addEventListener('click', () => {
+    if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        startSpeaking();
+    }
+});
+
+        function toggleSpeech() {
+            if (isSpeaking) {
+                stopSpeaking();
+            } else {
+                const currentLang = getLanguage();
+                if (currentLang === lastLang) {
+                    startSpeaking(lastOffset);
+                } else {
+                    startSpeaking();
+                }
+            }
+        }
+
+        function handleClick() {
+            clickCount++;
+
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    toggleSpeech();
+                    clickCount = 0;
+                }, 300);
+            } else if (clickCount === 2) {
+                clearTimeout(clickTimer);
+                stopSpeaking();
+                clickCount = 0;
+            }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && isSpeaking) {
+                stopSpeaking();
+            }
+        });
+    </script>
+</body>
+</html>

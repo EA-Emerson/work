@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voorleesfunctie</title>
+
+    <style>
+      #controls {
+        margin-top: 20px;
+      }
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button img {
+        width: 30px;
+        height: 30px;
+      }
+      button:disabled img {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <!-- Your text content goes here -->
+      Presentación de la sesión de la sesión de la sesión de análisis de la
+      presencia de satisfacción mapeo independencia papá papá de la boda de
+      eficiencia de la paciencia actividad de paciencia establecimiento de
+      restaurante examen teoría de la escalera de galletas de recepción de
+      recepción de mantenimiento enfermedad idea ambición ganadora de tema de
+      hecho celular usuario de la respiración genética cajista de cajista de
+      desarrollo de resultado de dos moneda tecnológica energía artesanales de
+      significado de significación de invitado desarrollo
+    </div>
+
+    <div id="controls">
+      <button id="readButton">
+        <img src="icons/megaphone.svg" alt="Read" />
+      </button>
+      <button id="restartButton" disabled>
+        <img src="icons/restart.svg" alt="Restart" />
+      </button>
+      <button id="stopButton" disabled>
+        <img src="icons/stop.svg" alt="Stop" />
+      </button>
+    </div>
+
+    <script>
+      let isSpeaking = false;
+      let speechSynthesisUtterance = null;
+      let lastOffset = 0;
+      let paused = false;
+      let cancel = false;
+      const restartButton = document.getElementById("restartButton");
+      const stopButton = document.getElementById("stopButton");
+      const readButton = document.getElementById("readButton");
+
+      function getLanguage() {
+        return document.documentElement.lang || "en-GB";
+      }
+
+      function startSpeaking(offset = 0) {
+        const text = document.body.innerText.slice(offset);
+        const lang = getLanguage();
+        speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
+        speechSynthesisUtterance.lang = lang;
+        speechSynthesisUtterance.voice =
+          speechSynthesis
+            .getVoices()
+            .find(
+              (voice) => voice.lang === lang && voice.name.includes("Female")
+            ) || speechSynthesis.getVoices()[0];
+
+        speechSynthesisUtterance.onboundary = (event) => {
+          if (event.name === "word") {
+            lastOffset = offset + event.charIndex;
+          }
+        };
+
+        speechSynthesisUtterance.onend = () => {
+          isSpeaking = false;
+          paused = false;
+          updateReadButtonIcon();
+        };
+
+        window.speechSynthesis.speak(speechSynthesisUtterance);
+        isSpeaking = true;
+        restartButton.disabled = false;
+        stopButton.disabled = false;
+        updateReadButtonIcon("pause");
+      }
+
+      function stopSpeaking() {
+        isSpeaking = false;
+        // updateReadButtonIcon("read");
+
+        window.speechSynthesis.cancel();
+        // togglePauseResume();
+      }
+
+      function togglePauseResume() {
+        if (paused) {
+          window.speechSynthesis.resume();
+          updateReadButtonIcon("pause");
+        } else if (cancel) {
+          window.speechSynthesis.cancel();
+          updateReadButtonIcon("read");
+        } else {
+          window.speechSynthesis.pause();
+          updateReadButtonIcon("play");
+        }
+        paused = !paused;
+      }
+
+      function toggleSpeech() {
+        if (isSpeaking) {
+          togglePauseResume();
+        } else {
+          startSpeaking(lastOffset);
+        }
+      }
+
+      function updateReadButtonIcon(state) {
+        const readButtonImg = readButton.querySelector("img");
+        if (state === "pause") {
+          readButtonImg.src = "icons/pause.svg";
+          readButtonImg.alt = "Pause";
+        } else if (state === "play") {
+          readButtonImg.src = "icons/play.svg";
+          readButtonImg.alt = "Play";
+        } else {
+          readButtonImg.src = "icons/megaphone.svg";
+          readButtonImg.alt = "Read";
+        }
+      }
+
+      readButton.addEventListener("click", toggleSpeech);
+      restartButton.addEventListener(
+        "click",
+        (offset=0) => {
+          window.speechSynthesis.cancel();
+          const text = document.body.innerText.slice(offset);
+          const lang = getLanguage();
+          speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
+          speechSynthesisUtterance.lang = lang;
+          speechSynthesisUtterance.voice =
+            speechSynthesis
+              .getVoices()
+              .find(
+                (voice) => voice.lang === lang && voice.name.includes("Female")
+              ) || speechSynthesis.getVoices()[0];
+
+          speechSynthesisUtterance.onboundary = (event) => {
+            if (event.name === "word") {
+              lastOffset = offset + event.charIndex;
+            }
+          };
+
+          speechSynthesisUtterance.onend = () => {
+            isSpeaking = false;
+            paused = false;
+            updateReadButtonIcon("pause");
+          };
+
+          window.speechSynthesis.speak(speechSynthesisUtterance);
+          isSpeaking = true;
+          paused=true
+          // restartButton.disabled = false;
+          // stopButton.disabled = false;
+          // updateReadButtonIcon("pause");
+        }
+      );
+      stopButton.addEventListener("click", stopSpeaking);
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && isSpeaking) {
+          stopSpeaking();
+        }
+      });
+    </script>
+  </body>
+</html>

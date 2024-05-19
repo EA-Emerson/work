@@ -1,49 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text to Speech</title>
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=HKbBD4gB"></script>
-    <style>
-      /* Add some basic styling */
-      #controls {
-        margin-top: 20px;
-      }
-      button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-      }
-      button img {
-        width: 30px;
-        height: 30px;
-      }
-      button:disabled img {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="content">
-      <!-- Your text content goes here -->
-
-      Presentación de la sesión de la sesión de la sesión de análisis de la presencia de satisfacción mapeo independencia papá papá de la boda de eficiencia de la paciencia actividad de paciencia establecimiento de restaurante examen teoría de la escalera de galletas de recepción de recepción de mantenimiento enfermedad idea ambición ganadora de tema de hecho celular usuario de la respiración genética cajista de cajista de desarrollo de resultado de dos moneda tecnológica energía artesanales de significado de significación de invitado desarrollo
-    </div>
-    <div id="controls">
-      <button id="readButton">
-        <img src="icons/megaphone.svg" alt="Read" />
-      </button>
-      <button id="restartButton" disabled>
-        <img src="icons/restart.svg" alt="Restart" />
-      </button>
-      <button id="stopButton" disabled>
-        <img src="icons/stop.svg" alt="Stop" />
-      </button>
-    </div>
-
-    <script src="text-to-speech.js"></script>
-  </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to Speech</title>
+  <script
+  src="https://code.responsivevoice.org/responsivevoice.js?key=HKbBD4gB"></script>
+  <style>
+    #controls {
+      margin-top: 20px;
+    }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button img {
+      width: 30px;
+      height: 30px;
+    }
+    button:disabled img {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <!-- Your text content goes here -->
+    Presentación de la sesión de la sesión de la sesión de análisis de la presencia de satisfacción mapeo independencia papá papá de la boda de eficiencia de la paciencia actividad de paciencia establecimiento de restaurante examen teoría de la escalera de galletas de recepción de recepción de mantenimiento enfermedad idea ambición ganadora de tema de hecho celular usuario de la respiración genética cajista de cajista de desarrollo de resultado de dos moneda tecnológica energía artesanales de significado de significación de invitado desarrollo
+  </div>
+  <div id="controls">
+    <button id="readButton">
+      <img src="icons/megaphone.svg" alt="Read">
+    </button>
+    <button id="restartButton" disabled>
+      <img src="icons/restart.svg" alt="Restart">
+    </button>
+    <button id="stopButton" disabled>
+      <img src="icons/stop.svg" alt="Stop">
+    </button>
+  </div>
+  <script src="text-to-speech.js"></script>
+</body>
 </html>
